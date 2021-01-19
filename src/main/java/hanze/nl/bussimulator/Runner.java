@@ -35,8 +35,8 @@ public class Runner {
 		Iterator<Bus> itr = actieveBussen.iterator();
 		while (itr.hasNext()) {
 			Bus bus = itr.next();
-			boolean eindpuntBereikt = bus.move();
-			if (eindpuntBereikt) {
+			bus.move();
+			if (bus.checkIfReachedDestination()) {
 				bus.sendLastETA(nu);
 				itr.remove();
 			}
