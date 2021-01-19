@@ -55,20 +55,25 @@ public class Bus{
 		naarVolgendeHalte();
 	}
 
-	public boolean move(){
-		boolean eindpuntBereikt = false;
+	public void move(){
 		bijHalte=false;
 		if (halteNummer == -1) {
 			start();
 		}
 		else {
 			totVolgendeHalte--;
-			if (totVolgendeHalte==0){
-				eindpuntBereikt=halteBereikt();
-			}
 		}
-		return eindpuntBereikt;
-	}
+    }
+    
+    public boolean checkIfReachedDestination(){
+        boolean eindpuntBereikt = false;
+
+        if (totVolgendeHalte==0){
+            eindpuntBereikt=halteBereikt();
+        }
+
+        return eindpuntBereikt;
+    }
 	
 	public void sendETAs(int nu){
 		int i=0;
