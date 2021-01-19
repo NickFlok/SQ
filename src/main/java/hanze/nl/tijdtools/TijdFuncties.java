@@ -13,7 +13,7 @@ public class TijdFuncties {
 	
     public void initSimulatorTijden(int interval, int syncInterval){
     	simulatorTijd=new Tijd(0,0,0);
-    	startTijd=getCentralTime();
+    	startTijd=CentralTime.getCentralTime();
     	verschil=berekenVerschil(startTijd,simulatorTijd);
     	this.interval=interval;
     	this.syncCounter=syncInterval;
@@ -25,15 +25,7 @@ public class TijdFuncties {
     	simulatorWeergaveTijd.increment(verschil);
     	return simulatorWeergaveTijd.toString();
     }
-    
-    public int getCounter(){
-    	return calculateCounter(simulatorTijd);
-    }
-    
-    public int getTijdCounter(){
-    	return calculateCounter(simulatorTijd)+calculateCounter(verschil);    	
-    }
-    
+
     public void simulatorStep() throws InterruptedException{
 		Thread.sleep(interval);
 		simulatorTijd.increment(new Tijd(0,0,1));
@@ -43,11 +35,7 @@ public class TijdFuncties {
 			synchroniseTijd();
 		}
     }
-    
-    private int calculateCounter(Tijd tijd){
-    	return tijd.getUur()*3600+tijd.getMinuut()*60+tijd.getSeconde();
-    }
-    
+
     private Tijd berekenVerschil(Tijd reverentieTijd, Tijd werkTijd){
     	int urenVerschil = reverentieTijd.getUur()-werkTijd.getUur();
     	int minutenVerschil = reverentieTijd.getMinuut()-werkTijd.getMinuut();
@@ -64,27 +52,11 @@ public class TijdFuncties {
     }
     
     private void synchroniseTijd(){
-    	Tijd huidigeTijd = getCentralTime();
+    	Tijd huidigeTijd = CentralTime.getCentralTime();
     	System.out.println("De werkelijke tijd is nu: "+ huidigeTijd.toString());
     	Tijd verwachtteSimulatorTijd = simulatorTijd.copyTijd();
     	verwachtteSimulatorTijd.increment(verschil);
     	Tijd delay = berekenVerschil(huidigeTijd, verwachtteSimulatorTijd);
     	verschil.increment(delay);
-    }
-
-	private Tijd getCentralTime()
-    {
-    	try {
-    		HTTPFuncties httpFuncties = new HTTPFuncties();
-			String result = httpFuncties.executeGet("xml");
-	        XStream xstream = new XStream();
-	        xstream.alias("Tijd", Tijd.class);
-	        Tijd tijd=(Tijd)xstream.fromXML(result);
-	        return tijd;
-
-    	} catch (IOException e) {
-			e.printStackTrace();
-			return new Tijd(0,0,0);
-		}
     }
 }
