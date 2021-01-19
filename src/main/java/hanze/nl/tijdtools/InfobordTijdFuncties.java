@@ -8,8 +8,9 @@ public class InfobordTijdFuncties {
 	public Tijd getCentralTime()
     {
     	try {
-    		HTTPFuncties httpFuncties = new HTTPFuncties();
-			String result = httpFuncties.executeGet("json");
+			HTTPFuncties httpFuncties = new HTTPFuncties();
+			httpFuncties.execute("json")
+			String result = httpFuncties.getResponseResult();
 			Tijd tijd = new ObjectMapper().readValue(result, Tijd.class);
 	        return tijd;
     	} catch (IOException e) {
