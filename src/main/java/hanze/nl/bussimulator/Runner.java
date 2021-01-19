@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import hanze.nl.tijdtools.Counter;
 import hanze.nl.tijdtools.TijdFuncties;
 
 public class Runner {
@@ -102,8 +103,8 @@ public class Runner {
 		tijdFuncties.initSimulatorTijden(interval,syncInterval);
 		int volgende = initBussen();
 		while ((volgende>=0) || !actieveBussen.isEmpty()) {
-			counter=tijdFuncties.getCounter();
-			tijd=tijdFuncties.getTijdCounter();
+			counter=  Counter.getCounter(tijd);
+			tijd= Counter.getTijdCounter(tijd, verschil); // Zou nog verder moet worden gerefactored
 			System.out.println("De tijd is:" + tijdFuncties.getSimulatorWeergaveTijd());
 			volgende = (counter==volgende) ? startBussen(counter) : volgende;
 			moveBussen(tijd);
